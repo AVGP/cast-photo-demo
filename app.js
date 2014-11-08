@@ -36,7 +36,7 @@ function initPeerSession() {
   });
 
   peer.on('connection', function(c) {
-    window.messageBus.broadcast(++peerCount);
+//    window.messageBus.broadcast((++peerCount) + '');
     c.on('data', function(data) {
       var img = new Image();
       img.src = data;
@@ -46,6 +46,6 @@ function initPeerSession() {
 }
 
 window.onload = function() {
-  initReceiver();
+//  initReceiver();
   initPeerSession();
 };

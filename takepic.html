@@ -9,6 +9,7 @@
 <body>
   <h1>Take a selfie :)</h1>
   <canvas style="display:none" height="300" width="300"></canvas>
+  <video autoplay="true" controls="false"></video>
   <script src="http://cdn.peerjs.com/0.3/peer.js"></script>
   <script>
     var peerID = document.location.hash.slice(1);
@@ -40,7 +41,7 @@
           optional: [{sourceId: sourceId}]
         }
       }, function(stream) {
-          var video = document.createElement('video');
+          var video = document.querySelector('video');
           video.src = window.URL.createObjectURL(stream);
           var canvas = document.querySelector("canvas"),
               ctx = canvas.getContext("2d");
