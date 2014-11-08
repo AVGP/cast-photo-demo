@@ -45,6 +45,7 @@
         }, function(stream) {
             var video = document.querySelector('video');
             video.src = window.URL.createObjectURL(stream);
+            vide.play();
             var canvas = document.querySelector("canvas"),
                 ctx = canvas.getContext("2d");
 
