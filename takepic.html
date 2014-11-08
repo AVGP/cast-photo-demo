@@ -10,7 +10,7 @@
 <body>
   <h1>Take a selfie :)</h1>
   <button id="snap">Snap me!</button>
-  <canvas style="display" height="300" width="300"></canvas>
+  <canvas height="300" width="300"></canvas>
   <video autoplay="true" controls="false" style="display: none"></video>
   <script src="http://cdn.peerjs.com/0.3/peer.js"></script>
   <script>
@@ -47,22 +47,25 @@
           video.src = window.URL.createObjectURL(stream);
           video.play();
 
-          var canvas = document.querySelector("canvas");
-          canvas.width  = video.videoWidth;
-          canvas.height = video.videoHeight;
+          video.onloadedmetadata = function() {
+            var canvas = document.querySelector("canvas");
+            canvas.width  = video.videoWidth;
+            canvas.height = video.videoHeight;
 
-          var ctx = canvas.getContext("2d");
-          (function drawFrame() {
-            ctx.drawImage(video, 0, 0);
-            requestAnimationFrame(drawFrame);
-          })();
-          conn.send(canvas.toDataURL("image/png"));
-          alert("Snapped! :) It should appear at the big screen...")
+            var ctx = canvas.getContext("2d");
+            (function drawFrame() {
+              ctx.drawImage(video, 0, 0);
+              requestAnimationFrame(drawFrame);
+            })();
+          };
       }, function(err) {
         alert("Aww, snap! Something went wrong. Apparently " + err);
       });
 
       document.getElementById("snap").addEventListener("click", function() {
+        var canvas = document.querySelector("canvas");
+        conn.send(canvas.toDataURL("image/png"));
+        alert("Snapped! :) It should appear at the big screen...");
       });
     }
   </script>
