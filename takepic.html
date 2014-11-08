@@ -10,6 +10,7 @@
   <h1>Take a selfie :)</h1>
   <canvas style="display:none" height="300" width="300"></canvas>
   <video autoplay="true" controls="false"></video>
+  <button id="snap">Snap me!</button>
   <script src="http://cdn.peerjs.com/0.3/peer.js"></script>
   <script>
     var peerID = document.location.hash.slice(1);
@@ -36,21 +37,23 @@
     }
 
     function cheese(sourceId) {
-      navigator.getMedia({
-        video: {
-          optional: [{sourceId: sourceId}]
-        }
-      }, function(stream) {
-          var video = document.querySelector('video');
-          video.src = window.URL.createObjectURL(stream);
-          var canvas = document.querySelector("canvas"),
-              ctx = canvas.getContext("2d");
+      document.getElementById("snap").addEventListener("click", function() {
+        navigator.getMedia({
+          video: {
+            optional: [{sourceId: sourceId}]
+          }
+        }, function(stream) {
+            var video = document.querySelector('video');
+            video.src = window.URL.createObjectURL(stream);
+            var canvas = document.querySelector("canvas"),
+                ctx = canvas.getContext("2d");
 
-          ctx.drawImage(video, 0, 0);
-          conn.send(canvas.toDataURL("image/png"));
-          alert("Snapped! :) It should appear at the big screen...")
-      }, function(err) {
-        alert("Aww, snap! Something went wrong. Apparently " + err);
+            ctx.drawImage(video, 0, 0);
+            conn.send(canvas.toDataURL("image/png"));
+            alert("Snapped! :) It should appear at the big screen...")
+        }, function(err) {
+          alert("Aww, snap! Something went wrong. Apparently " + err);
+        });
       });
     }
   </script>
