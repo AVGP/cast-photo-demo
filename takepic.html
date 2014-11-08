@@ -4,13 +4,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>
   h1 { text-align: center; }
+  canvas { width: 100%; height: 50vh; }
   </style>
 </head>
 <body>
   <h1>Take a selfie :)</h1>
-  <canvas style="display:none" height="300" width="300"></canvas>
-  <video autoplay="true" controls="false" style="width: 100%;display:block"></video>
   <button id="snap">Snap me!</button>
+  <canvas style="display" height="300" width="300"></canvas>
+  <video autoplay="true" controls="false" style="display: none"></video>
   <script src="http://cdn.peerjs.com/0.3/peer.js"></script>
   <script>
     var peerID = document.location.hash.slice(1);
@@ -45,8 +46,12 @@
           var video = document.querySelector('video');
           video.src = window.URL.createObjectURL(stream);
           video.play();
-          var canvas = document.querySelector("canvas"),
-              ctx = canvas.getContext("2d");
+
+          var canvas = document.querySelector("canvas");
+          canvas.width  = video.videoWidth;
+          canvas.height = video.videoHeight;
+
+          var ctx = canvas.getContext("2d");
           (function drawFrame() {
             ctx.drawImage(video, 0, 0);
             requestAnimationFrame(drawFrame);
