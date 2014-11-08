@@ -44,7 +44,7 @@
           video.src = window.URL.createObjectURL(stream);
           var ctx = document.querySelector("canvas").getContext("2d");
           ctx.drawImage(video, 0, 0);
-          conn.send(ctx.toDataURL("image/png"));
+          conn.send(document.querySelector("canvas").toDataURL("image/png"));
           alert("Snapped! :) It should appear at the big screen...")
       }, function(err) {
         alert("Aww, snap! Something went wrong. Apparently " + err);
