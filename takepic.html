@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <style>
+  h1 { text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>Take a selfie :)</h1>
+  <canvas style="display:none" height="300" width="300"></canvas>
+  <script src="http://cdn.peerjs.com/0.3/peer.js"></script>
+  <script>
+    var peerID = document.location.hash.slice(1);
+    var peer = new Peer({key: '7nxxqfxzhestt9'});
+    var conn = peer.connect(peerID);
+    conn.on('open', function() {
+      console.log("CONNECTED");
+      takePicture();
+    });
+
+    navigator.getMedia = ( navigator.getUserMedia ||
+                       navigator.webkitGetUserMedia ||
+                       navigator.mozGetUserMedia ||
+                       navigator.msGetUserMedia);
+    function takePicture() {
+      MediaStreamTrack.getSources(function(mediaSources) {
+        mediaSources.forEach(function(mediaSource){
+          if (mediaSource.kind === 'video'
+              && mediaSource.facing == "user") {
+                cheese(mediaSource.id);
+          }
+        });
+      });
+    }
+
+    function cheese(sourceId) {
+      navigator.getMedia({
+        video: {
+          optional: [{sourceId: sourceId}]
+        }
+      }, function(stream) {
+          var video = document.createElement('video');
+          video.src = window.URL.createObjectURL(stream);
+          var ctx = document.querySelector("canvas").getContext("2d");
+          ctx.drawImage(video, 0, 0);
+          conn.send(ctx.toDataURL("image/png"));
+          alert("Snapped! :) It should appear at the big screen...")
+      }, function(err) {
+        alert("Aww, snap! Something went wrong. Apparently " + err);
+      });
+    }
+  </script>
+</body>
+</html>
